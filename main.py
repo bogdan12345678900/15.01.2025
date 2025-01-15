@@ -12,7 +12,7 @@
 #     if elem.startswith(symbol):
 #         count += 1
 # print(count)
-
+import time
 # import datetime
 #
 # def loggin():
@@ -51,6 +51,12 @@
 
 from tkinter import *
 from tkinter import messagebox
+
+
+def logging():
+    pass
+
+
 def is_register_user():
     global login
     global pass_1
@@ -75,28 +81,40 @@ def user_login():
     pass1_label.pack()
     pass_1 = Entry(root, font=('Arial', 18), width=15)
     pass_1.pack()
-    btn_sign_in = Button(root, text="Register", font=('Arial', 18, 'bold'), height=2, width=15, command=is_register_user)
+    btn_sign_in = Button(root, text="Register", font=('Arial', 18, 'bold'), height=2, width=15,
+                         command=is_register_user)
     btn_sign_in.pack(pady=45)
+
+
 def is_user(log):
     new_lst = []
-    with open("user.txt", "r") as file:
-        data = file.readlines()
+    while True:
+        try:
+            with open("user.txt", "r") as file:
+                data = file.readlines()
+                break
+        except BaseException:
+            logging()
+            time.sleep(5)
     for log in data:
         new_lst.append(log[:log.find("|")])
         if log in new_lst:
-            messagebox.showwarning("Error!","логін зайнятий")
+            messagebox.showwarning("Error!", "логін зайнятий")
             return False
         else:
             return True
+
+
 def write_data():
     log = login.get()
     password = pass_1.get()
-    if len(log)>2 and password == pass_2.get() and is_user(log):
-        with open("user.txt","a") as file:
+    if len(log) > 2 and password == pass_2.get() and is_user(log):
+        with open("user.txt", "a") as file:
             file.write(f"{log}|{password}\n")
-        messagebox.showinfo("Ok","ви зарегані")
+        messagebox.showinfo("Ok", "ви зарегані")
     else:
-        messagebox.showerror("No!","Ввод не вірний")
+        messagebox.showerror("No!", "Ввод не вірний")
+
 
 def register():
     global root
@@ -111,13 +129,13 @@ def register():
     label.pack()
     login_label = Label(root, text="input login", font=('Arial', 18, 'bold'))
     login_label.pack()
-    login = Entry(root, font=('Arial',18), width=15)
+    login = Entry(root, font=('Arial', 18), width=15)
     login.pack()
     pass1_label = Label(root, text="password", font=('Arial', 18, 'bold'))
     pass1_label.pack()
-    pass_1 = Entry(root, font=('Arial',18), width=15)
+    pass_1 = Entry(root, font=('Arial', 18), width=15)
     pass_1.pack()
-    pass_2 = Entry(root, font=('Arial',18), width=15)
+    pass_2 = Entry(root, font=('Arial', 18), width=15)
     pass_2.pack()
     btn_register = Button(root, text="Register", font=('Arial', 18, 'bold'), height=2, width=15, command=write_data)
     btn_register.pack(pady=45)
@@ -131,13 +149,13 @@ def setuo_root():
     label.pack()
     btn_register = Button(root, text="Register", font=('Arial', 18, 'bold'), height=2, width=15, command=register)
     btn_register.pack(pady=45)
-    btn_login = Button(root, text="Login", font=('Arial', 18, 'bold'), height=2, width=15 , command=user_login)
+    btn_login = Button(root, text="Login", font=('Arial', 18, 'bold'), height=2, width=15, command=user_login)
     btn_login.pack()
 
 
 if __name__ == "__main__":
     root = Tk()
-    login, pass_1,pass_2 = "","",""
+    login, pass_1, pass_2 = "", "", ""
     setuo_root()
 
     mainloop()
